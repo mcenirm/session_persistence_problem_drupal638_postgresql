@@ -1,0 +1,3 @@
+name = Session snoop
+description = Snoops session data
+core = 6.x

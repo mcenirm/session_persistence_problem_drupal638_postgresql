@@ -1,0 +1,18 @@
+<?php
+function sessionsnoop_menu() {
+  $items = array();
+  $items['sessionsnoop'] = array(
+    'title' => 'Session data',
+    'page callback' => 'sessionsnoop_page_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+function sessionsnoop_page_callback() {
+  if (!isset($_SESSION['sessionsnoop']['counter'])) {
+    $_SESSION['sessionsnoop']['counter'] = 0;
+  }
+  $_SESSION['sessionsnoop']['counter'] += 1;
+  return check_plain(print_r($_SESSION, TRUE));
+}
