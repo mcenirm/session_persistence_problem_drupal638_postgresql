@@ -84,6 +84,10 @@ for v in 36 37 38 ; do
       cd "$droot"
       /usr/local/bin/drush -y site-install --clean-url=0 --db-url=${dburl}
       /usr/local/bin/drush -y user-password admin --password="admin"
+      if [ "$d" = pg ] ; then
+        # Try workaround from https://www.drupal.org/node/2687401#comment-10989199
+        psql -d "$name" -c 'alter table sessions alter session type text'
+      fi
     fi
     if [ -d ${droot} ] ; then
       cd "$droot"
