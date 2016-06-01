@@ -74,7 +74,7 @@ for v in 36 37 38 ; do
     dburl=${d}sql://root@localhost/${name}
     if ! [ -d ${droot} ] ; then
       case "$d" in
-        my) mysqladmin --force drop "$name" ;;
+        my) (mysqlshow | grep -q -e "$name") && mysqladmin --force drop "$name" ;;
         pg) dropdb --if-exists "$name" ;;
         *) echo >&2 Bad database type: "$d" ; exit 2 ;;
       esac
@@ -102,7 +102,7 @@ for v in 36 37 38 ; do
         -qO-
         "http://localhost/${name}/?q=sessionsnoop"
       )
-      rm "$cookies"
+      rm -f "$cookies"
       if for i in 1 2 3 4 ; do
           "${wget_cmd[@]}"
         done | fgrep '[counter]' | egrep -o '[0-9]+' | diff >/dev/null -q - <( echo -e "1\n2\n3\n4" ) ; then
